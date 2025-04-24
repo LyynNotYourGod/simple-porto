@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lyyn | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    canvas#stars {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: -1;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.4em;
+      color: #11f25c;
+      text-decoration: none;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.6em;
+      cursor: pointer;
+      color: #11f25c;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    nav a {
+      padding: 8px 15px;
+      border-radius: 20px;
+      background: transparent;
+      color: #11f25c;
+      border: 2px solid #11f25c;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    nav a:hover, nav a.active {
+      background: #11f25c;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 60px 20px 40px;
+      text-align: center;
+      min-height: 80vh;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.6s ease-out;
+    }
+
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .home .profile-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 5px solid #11f25c;
+      box-shadow: 0 0 20px #11f25c;
+      overflow: hidden;
+      margin: 90px auto 25px;
+    }
+
+    .profile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 span {
+      color: #11f25c;
+    }
+
+    .typing-text, .typing-desc {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+      min-height: 30px;
+    }
+
+    .description {
+      max-width: 600px;
+      margin: auto;
+      font-size: 1.1em;
+      color: #ccc;
+      min-height: 50px;
+    }
+
+    .social-buttons {
+      margin-top: 20px;
+    }
+
+    .social-buttons a {
+      display: inline-block;
+      margin: 10px 10px 0;
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: #11f25c;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .social-buttons a:hover {
+      background-color: #11f25c;
+      transform: scale(1.05);
+    }
+
+    .section-title {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #11f25c;
+    }
+
+    .projects-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .project-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid #11f25c;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 0 10px rgba(17, 242, 92, 0.3);
+      text-align: left;
+    }
+
+    .project-box h3 {
+      color: #11f25c;
+      margin-bottom: 10px;
+    }
+
+    .project-box a {
+      color: #11f25c;
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 10px;
+      background: rgba(0,0,0,0.3);
+      font-size: 0.95em;
+      color: #ccc;
+    }
+
+    footer span {
+      color: #11f25c;
+    }
+
+    @media(max-width: 768px) {
+      nav {
+        flex-direction: column;
+        background: rgba(0,0,0,0.9);
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+      }
+
+      nav.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<header>
+  <a class="logo">LyynNotDev</a>
+  <i class="fas fa-bars menu-toggle" onclick="toggleMenu()"></i>
+  <nav id="navMenu">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="home" class="home">
+  <div class="profile-img">
+    <img src="https://i.supa.codes/rwo1GF" alt="Profile" />
+  </div>
+  <h1>Hi, I'm <span>LyynNotDev</span></h1>
+  <div class="typing-text" id="typing-role"></div>
+  <div class="typing-desc" id="typing-desc"></div>
+  <div class="social-buttons">
+    <a href="https://wa.me/62882010414726">WhatsApp</a>
+    <a href="https://lyyn-api.my.id">My Rest Api</a>
+  </div>
+</section>
+
+<section id="skills">
+  <h2 class="section-title">Skills</h2>
+  <div class="skills-container">
+    <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+    <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+    <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS">
+    <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+    <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Bash">
+  </div>
+</section>
+
+<section id="about">
+  <h2 class="section-title">About Me</h2>
+  <p class="description">
+    Welcome to my portfolio. My name is Lyyn. I'm a WhatsApp bot developer and passionate programmer.
+  </p>
+</section>
+
+<section id="projects">
+  <h2 class="section-title">Projects</h2>
+  <div class="projects-container">
+
+    <div class="project-box">
+      <h3>WhatsApp Bot</h3>
+      <p>Automation bot untuk WhatsApp pakai Node.js + Baileys. Cocok untuk jualan, layanan publik, dll.</p>
+    </div>
+
+    <div class="project-box">
+      <h3>Rest API v1</h3>
+      <p>Versi awal REST API untuk uji coba & dokumentasi.</p>
+      <a href="https://old.lyyn-api.my.id/" target="_blank">Kunjungi</a>
+    </div>
+
+    <div class="project-box">
+      <h3>Rest API v2</h3>
+      <p>Versi eksperimen dengan fitur baru dan endpoint tambahan.</p>
+      <a href="https://dev.lyyn-api.my.id/" target="_blank">Kunjungi</a>
+    </div>
+
+    <div class="project-box">
+      <h3>Rest API v3</h3>
+      <p>Versi stabil & publik REST API milik saya.</p>
+      <a href="https://lyyn-api.my.id/" target="_blank">Kunjungi</a>
+    </div>
+
+    <div class="project-box">
+      <h3>Baileys WhatsApp</h3>
+      <p>Modifikasi Baileys library untuk WhatsApp bot, open source.</p>
+      <a href="https://github.com/LyynNotYourGod/Lyyn-Baileys" target="_blank">View on GitHub</a>
+    </div>
+
+    <div class="project-box">
+      <h3>Portfolio Website</h3>
+      <p>Website sederhana ini dibuat dengan HTML, CSS, dan sedikit JavaScript.</p>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">Contact</h2>
+  <p class="description">Email Me: <b>LyynNotYourGod@gmail.com</b></p>
+</section>
+
+<footer>
+  © 2025 <span>Lyyn</span>. All rights reserved. <span>⚡</span>
+</footer>
+
+<audio id="bgMusic" src="https://files.catbox.moe/a5ncoy.mp3" autoplay loop></audio>
+
+<script>
+  const roles = ["Web Developer", "Script Creator", "Developer", "Programmer"];
+  const desc = "Welcome to my portfolio. My name is Lyyn. I'm a WhatsApp bot developer.";
+  let roleIndex = 0, roleChar = 0, descChar = 0;
+
+  function typeRole() {
+    const el = document.getElementById('typing-role');
+    if (roleChar < roles[roleIndex].length) {
+      el.textContent += roles[roleIndex][roleChar++];
+      setTimeout(typeRole, 100);
+    } else {
+      setTimeout(() => {
+        el.textContent = "";
+        roleChar = 0;
+        roleIndex = (roleIndex + 1) % roles.length;
+        typeRole();
+      }, 1500);
+    }
+  }
+
+  function typeDesc() {
+    const el = document.getElementById('typing-desc');
+    if (descChar < desc.length) {
+      el.textContent += desc[descChar++];
+      setTimeout(typeDesc, 40);
+    }
+  }
+
+  function revealOnScroll() {
+    document.querySelectorAll("section").forEach(sec => {
+      const top = sec.getBoundingClientRect().top;
+      if (top < window.innerHeight * 0.85) sec.classList.add("show");
+    });
+  }
+
+  function toggleMenu() {
+    document.getElementById('navMenu').classList.toggle('show');
+  }
+
+  const music = document.getElementById("bgMusic");
+
+  function tryPlayMusic() {
+    music.muted = false;
+    music.play().catch(() => {
+      console.log("Autoplay mungkin diblokir oleh browser.");
+    });
+    window.removeEventListener("click", tryPlayMusic);
+    window.removeEventListener("scroll", tryPlayMusic);
+  }
+
+  window.addEventListener("load", () => {
+    typeRole();
+    typeDesc();
+    revealOnScroll();
+    window.addEventListener("click", tryPlayMusic);
+    window.addEventListener("scroll", tryPlayMusic);
+  });
+
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+
+  const stars = Array(100).fill().map(() => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    radius: Math.random() * 1.5,
+    speed: Math.random() * 1 + 0.5
+  }));
+
+  function drawStars() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#ffffff';
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fill();
+      star.y += star.speed;
+      if (star.y > h) {
+        star.y = 0;
+        star.x = Math.random() * w;
+      }
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  drawStars();
+
+  window.addEventListener("resize", () => {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  });
+
+  window.addEventListener("scroll", revealOnScroll);
+</script>
+</body>
+</html>
