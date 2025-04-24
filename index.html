@@ -188,6 +188,21 @@
       color: #11f25c;
     }
 
+    #playMusicBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #11f25c;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 16px;
+      box-shadow: 0 0 10px #11f25c;
+      cursor: pointer;
+    }
+
     @media(max-width: 768px) {
       nav {
         flex-direction: column;
@@ -306,7 +321,9 @@
   © 2025 <span>Lyyn</span>. All rights reserved. <span>⚡</span>
 </footer>
 
-<audio id="bgMusic" src="https://files.catbox.moe/a5ncoy.mp3" autoplay loop></audio>
+<audio id="bgMusic" src="https://files.catbox.moe/a5ncoy.mp3" loop></audio>
+
+<button id="playMusicBtn">Play Music</button>
 
 <script>
   const roles = ["Web Developer", "Script Creator", "Developer", "Programmer"];
@@ -347,23 +364,22 @@
     document.getElementById('navMenu').classList.toggle('show');
   }
 
-  const music = document.getElementById("bgMusic");
-
-  function tryPlayMusic() {
-    music.muted = false;
-    music.play().catch(() => {
-      console.log("Autoplay mungkin diblokir oleh browser.");
-    });
-    window.removeEventListener("click", tryPlayMusic);
-    window.removeEventListener("scroll", tryPlayMusic);
-  }
+  document.getElementById("playMusicBtn").addEventListener("click", () => {
+    const music = document.getElementById("bgMusic");
+    music.play()
+      .then(() => {
+        document.getElementById("playMusicBtn").style.display = "none";
+      })
+      .catch(err => {
+        alert("Gagal memutar musik. Mungkin browser memblokirnya.");
+        console.error(err);
+      });
+  });
 
   window.addEventListener("load", () => {
     typeRole();
     typeDesc();
     revealOnScroll();
-    window.addEventListener("click", tryPlayMusic);
-    window.addEventListener("scroll", tryPlayMusic);
   });
 
   const canvas = document.getElementById('stars');
